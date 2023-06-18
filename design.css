@@ -22,9 +22,17 @@ body {
     align-self: center;
 }
 
+#pipes {
+    display: flex;
+    gap: 100px;
+}
 .pipe {
     width: 100px;
     height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 .pipePart {
     width: 100%;
