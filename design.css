@@ -4,6 +4,7 @@ body {
     width: 100%;
     height: 100%;
     overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
 }
 
 #main {
@@ -12,19 +13,26 @@ body {
     margin: auto;
     display: flex;
     align-items: center;
+    overflow: hidden;
+    position: relative;
+    background: blue;
 }
 
 #bird {
     background-color: yellow;
     width: 50px;
     height: 50px;
-    margin: 0 auto;
-    align-self: center;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 #pipes {
     display: flex;
     gap: 100px;
+    position: absolute;
+    top: 0;
 }
 .pipe {
     width: 100px;
@@ -37,4 +45,20 @@ body {
 .pipePart {
     width: 100%;
     background: rgb(119, 172, 119);
+}
+
+#gameover {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 500px;
+    height: 200px;
+    background: rgb(214, 139, 41);
+    text-align: center;
+    justify-content: center;
+    color: white;
+    font-size: 30px;
+    font-weight: 900;
+    visibility: hidden;
 }
