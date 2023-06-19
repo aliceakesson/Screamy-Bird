@@ -1,5 +1,5 @@
 body {
-    background-color: rgb(148, 210, 221);
+    background-color: rgb(185, 220, 226);
     margin: 0 auto;
     width: 100%;
     height: 100%;
@@ -15,17 +15,23 @@ body {
     align-items: center;
     overflow: hidden;
     position: relative;
-    background: blue;
+    border: 10px white solid;
+    border-top: 0;
+    border-bottom: 0;
+    background-image:url(background.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 
 #bird {
-    background-color: yellow;
+    background-color: rgb(209, 173, 72);
     width: 50px;
     height: 50px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 10;
 }
 
 #pipes {
@@ -44,7 +50,7 @@ body {
 }
 .pipePart {
     width: 100%;
-    background: rgb(119, 172, 119);
+    background: rgb(83, 206, 83);
 }
 
 #gameover {
@@ -53,7 +59,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
-    height: 200px;
+    height: 100px;
     background: rgb(214, 139, 41);
     text-align: center;
     justify-content: center;
