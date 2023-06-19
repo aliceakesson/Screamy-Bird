@@ -70,4 +70,5 @@ body {
     font-size: 30px;
     font-weight: 900;
     visibility: hidden;
+    z-index: 100;
 }

@@ -82,7 +82,7 @@ function run() {
 
         bird.style.top = newY + "px"; 
 
-        if (newY >= window.innerHeight - bird.clientHeight) {
+        if (isColliding() || newY >= window.innerHeight - bird.offsetHeight ) {
             gameOver();
         } else moveBackground();
         
@@ -117,4 +117,24 @@ function moveBackground() {
         if(lastX < 800)
             createPipe();
     } else createPipe();
+}
+
+function isColliding() {
+    pipes = document.querySelectorAll('.pipe');
+    var collision = false; 
+    pipes.forEach(pipe => {
+        if(!collision) {
+            const pipeRect = pipe.getBoundingClientRect();
+            const birdRect = bird.getBoundingClientRect();
+
+            // if bird passed pipe without going through it's two parts
+            if((pipeRect.x <= (birdRect.x + bird.offsetWidth) 
+                && (pipeRect.x + pipe.offsetWidth) >= birdRect.x)
+                && (pipe.firstChild.offsetHeight >= birdRect.y
+                    || pipe.lastChild.getBoundingClientRect().y <= (birdRect.y+bird.offsetHeight))) { 
+                collision = true; 
+            }
+        }
+    });
+    return collision; 
 }
