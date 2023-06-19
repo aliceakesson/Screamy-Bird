@@ -24,14 +24,16 @@ body {
 }
 
 #bird {
-    background-color: rgb(209, 173, 72);
-    width: 50px;
-    height: 50px;
+    width: 80px;
+    height: 65px;
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 10;
+    background-image: url(bird.png);
+    background-repeat: no-repeat;
+    background-size:cover;
 }
 
 #pipes {
