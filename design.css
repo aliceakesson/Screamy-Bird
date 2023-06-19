@@ -62,7 +62,7 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 500px;
-    height: 100px;
+    height: 150px;
     background: rgb(214, 139, 41);
     text-align: center;
     justify-content: center;
@@ -71,4 +71,11 @@ body {
     font-weight: 900;
     visibility: hidden;
     z-index: 100;
+    border-radius: 10px;
+}
+
+#startover {
+    font-size: 20px;
+    font-weight: bolder;
+    padding: 5px 10px;
 }

@@ -13,6 +13,8 @@ var dy = 0;
 const upperLimit = 0.15;
 const lowerLimit = 0.85;
 
+const startOverButton = document.getElementById('startover');
+
 function createPipe() {
     const value = Math.random() * (lowerLimit - upperLimit) + upperLimit;
 
@@ -137,4 +139,22 @@ function isColliding() {
         }
     });
     return collision; 
+}
+
+startOverButton.addEventListener('click', restart)
+
+function restart() {
+    ongoinggame = true; 
+
+    document.getElementById('gameover').style.visibility = 'hidden';
+    
+    pipes = document.querySelectorAll('.pipe');
+    pipes.forEach(pipe => {
+        document.getElementById('pipes').removeChild(pipe);
+    });
+
+    bird.style.top = "443px";
+    dy = 0; 
+
+    createPipe();
 }
