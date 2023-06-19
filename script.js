@@ -10,36 +10,14 @@ var ongoinggame = true;
 const gravity = 9.82;
 var dy = 0; 
 
-function reloadPipes() {
-    pipes = document.querySelectorAll('.pipe');
-    pipes.forEach(pipe => {
-        const value = parseFloat(pipe.getAttribute('height-percentage'));
-    
-        const topHeight = parseInt(value * pipe.clientHeight) - parseInt(middleSpace/2); 
-        const bottomHeight = parseInt((1 - value) * pipe.clientHeight) - parseInt(middleSpace/2);
-    
-        const top = document.createElement('div');
-        const bottom = document.createElement('div');
-    
-        top.classList.add('pipePart');
-        bottom.classList.add('pipePart');
-    
-        top.style.height = topHeight + "px";
-        bottom.style.height = bottomHeight + "px";
-    
-        top.style.marginBottom = middleSpace + "px";
-    
-        pipe.appendChild(top);
-        pipe.appendChild(bottom);
-    
-    
-    });
-}
+const upperLimit = 0.15;
+const lowerLimit = 0.85;
 
-function createPipe(value) {
+function createPipe() {
+    const value = Math.random() * (lowerLimit - upperLimit) + upperLimit;
+
     const pipe = document.createElement('div');
     pipe.classList.add('pipe');
-    pipe.setAttribute('height-percentage', value);
     
     pipe.style.left = "600px";
 
@@ -55,12 +33,28 @@ function createPipe(value) {
     } 
 
     document.getElementById('pipes').appendChild(pipe);
+
+    const topHeight = parseInt(value * pipe.clientHeight) - parseInt(middleSpace/2); 
+    const bottomHeight = parseInt((1 - value) * pipe.clientHeight) - parseInt(middleSpace/2);
+
+    const top = document.createElement('div');
+    const bottom = document.createElement('div');
+
+    top.classList.add('pipePart');
+    bottom.classList.add('pipePart');
+
+    top.style.height = topHeight + "px";
+    bottom.style.height = bottomHeight + "px";
+
+    top.style.marginBottom = middleSpace + "px";
+
+    pipe.appendChild(top);
+    pipe.appendChild(bottom);
 }
 
-createPipe(0.5);
-createPipe(0.85);
-createPipe(0.35);
-reloadPipes();
+createPipe();
+createPipe();
+createPipe();
 
 document.addEventListener('keydown', e => {
     if(e.code == "Space")
@@ -109,7 +103,18 @@ function moveBackground() {
         const newLeft = left - 10; 
 
         pipe.style.left = newLeft + "px"; 
-
-        
     });
+
+    if(pipes.length > 0) {
+        const firstX = pipes[0].getBoundingClientRect().left;
+        if(firstX < -100) {
+            document.getElementById('pipes').removeChild(pipes[0]);
+        }
+    }
+
+    if(pipes.length > 0) {
+        const lastX = pipes[pipes.length - 1].getBoundingClientRect().left;
+        if(lastX < 800)
+            createPipe();
+    } else createPipe();
 }
