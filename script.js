@@ -1,5 +1,7 @@
 const bird = document.getElementById('bird');
 var pipes = document.querySelectorAll('.pipe');
+const score = document.getElementById('score');
+var visitedPipes = []
 
 const gameOverDisplay = document.getElementById('gameover'); 
 
@@ -105,12 +107,26 @@ function moveBackground() {
         const newLeft = left - 10; 
 
         pipe.style.left = newLeft + "px"; 
+
+        const pipeRightSide = rect.x + pipe.offsetWidth;
+        const birdLeftSide = bird.getBoundingClientRect().x; 
+
+        // increment score if bird just passed pipe
+        const margin = 10; 
+        if(!visitedPipes.includes(pipe) && pipeRightSide < birdLeftSide 
+                && (pipeRightSide - birdLeftSide) < margin) {
+            const points = parseInt(score.innerHTML);
+            const newPoints = points + 1; 
+            score.innerHTML = newPoints; 
+            visitedPipes.push(pipe)
+        }
     });
 
     if(pipes.length > 0) {
         const firstX = pipes[0].getBoundingClientRect().left;
         if(firstX < -100) {
             document.getElementById('pipes').removeChild(pipes[0]);
+            visitedPipes.shift();
         }
     }
 
