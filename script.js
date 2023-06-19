@@ -3,7 +3,7 @@ var pipes = document.querySelectorAll('.pipe');
 
 const gameOverDisplay = document.getElementById('gameover'); 
 
-const middleSpace = 200;
+const middleSpace = 250;
 
 var ongoinggame = true; 
 
@@ -40,6 +40,19 @@ function createPipe(value) {
     const pipe = document.createElement('div');
     pipe.classList.add('pipe');
     pipe.setAttribute('height-percentage', value);
+    
+    pipe.style.left = "600px";
+
+    pipes = document.querySelectorAll('.pipe');
+    if(pipes.length > 0) {
+        const lastElem = pipes[pipes.length - 1];
+        const rect = lastElem.getBoundingClientRect();
+        const lastX = rect.left;
+
+        const x = lastX + 300;
+
+        pipe.style.left = x + "px";
+    } 
 
     document.getElementById('pipes').appendChild(pipe);
 }
@@ -76,12 +89,27 @@ function run() {
         bird.style.top = newY + "px"; 
 
         if (newY >= window.innerHeight - bird.clientHeight) {
-        gameOver();
-        }
+            gameOver();
+        } else moveBackground();
+        
     }
 }
 
 function gameOver() {
     ongoinggame = false; 
     gameOverDisplay.style.visibility = "visible";
+}
+
+function moveBackground() {
+    pipes = document.querySelectorAll('.pipe');
+    pipes.forEach(pipe => {
+        const rect = pipe.getBoundingClientRect();
+        const left = parseInt(pipe.style.left, 10);
+
+        const newLeft = left - 10; 
+
+        pipe.style.left = newLeft + "px"; 
+
+        
+    });
 }
