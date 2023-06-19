@@ -55,7 +55,7 @@ document.addEventListener('keydown', e => {
 });
 
 function jump() {
-
+    dy = -30;
 }
 
 setInterval(run, 100); 
@@ -68,7 +68,12 @@ function run() {
 
         const newY = y + dy; 
 
-        bird.style.top = `${newY}px`; 
+        if(dy > 0)
+            dy-= 2;
+        if(dy < 0)
+            dy = 0; 
+
+        bird.style.top = newY + "px"; 
 
         if (newY >= window.innerHeight - bird.clientHeight) {
         gameOver();
