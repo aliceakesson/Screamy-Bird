@@ -61,33 +61,33 @@ createPipe();
 createPipe();
 createPipe();
 
-document.addEventListener('keydown', e => {
-    if(e.code == "Space")
-        jump();
-});
+// document.addEventListener('keydown', e => {
+//     if(e.code == "Space")
+//         jump();
+// });
 
-function jump() {
-    dy = -30;
-}
+// function jump() {
+//     dy = -30;
+// }
 
 setInterval(run, 100); 
 function run() {
     if(ongoinggame) {
-        const rect = bird.getBoundingClientRect();
-        const y = parseFloat(rect.top) || 0;
+        // const rect = bird.getBoundingClientRect();
+        // const y = parseFloat(rect.top) || 0;
 
-        dy += gravity; 
+        // dy += gravity; 
 
-        const newY = y + dy; 
+        // const newY = y + dy; 
 
-        if(dy > 0)
-            dy-= 2;
-        if(dy < 0)
-            dy = 0; 
+        // if(dy > 0)
+        //     dy-= 2;
+        // if(dy < 0)
+        //     dy = 0; 
 
-        bird.style.top = newY + "px"; 
+        bird.style.top = dy + "px"; 
 
-        if (isColliding() || newY >= window.innerHeight - bird.offsetHeight ) {
+        if (isColliding() || dy >= window.innerHeight - bird.offsetHeight ) {
             gameOver();
         } else moveBackground();
         
@@ -95,8 +95,8 @@ function run() {
 }
 
 function gameOver() {
-    ongoinggame = false; 
-    gameOverDisplay.style.visibility = "visible";
+    // ongoinggame = false; 
+    // gameOverDisplay.style.visibility = "visible";
 }
 
 function moveBackground() {
@@ -171,7 +171,7 @@ function restart() {
     });
 
     bird.style.top = "443px";
-    dy = 0; 
+    dy = 443; 
 
     createPipe();
 }
@@ -181,21 +181,43 @@ function restart() {
 
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 const analyser = audioContext.createAnalyser();
+analyser.fftSize = 32; 
 
-function accessAudio() {
-    navigator.mediaDevices.getUserMedia({ audio: true })
-    .then((stream) => {
-        const mic = audioContext.createMediaStreamSource(stream);
-        mic.connect(analyser);
+const amountOfSamples = analyser.frequencyBinCount;
+const dataArray = new Uint8Array(amountOfSamples);
 
-        ongoinggame = true; 
+navigator.mediaDevices.getUserMedia({ audio: true })
+.then((stream) => {
+    const mic = audioContext.createMediaStreamSource(stream);
+    mic.connect(analyser);
 
-    })
-    .catch((error) => {
-        console.error('Error when trying to connect to microphone:', error);
-    });
+    jump();
+})
+.catch((error) => {
+    console.error('Error when trying to connect to microphone:', error);
+});
 
-    startButton.style.visibility = 'hidden';
+function jump() {
+    if(ongoinggame) {
+        requestAnimationFrame(jump);
+
+        analyser.getByteFrequencyData(dataArray);
+
+        const docHeight = document.body.scrollHeight;
+
+        const value = dataArray[0] / 255; // value between 0 and 1 
+        dy = docHeight - (value * docHeight);
+        console.log(dy);
+    }
 }
 
-startButton.addEventListener('click', accessAudio);
+function start() {
+    audioContext.resume();
+
+    ongoinggame = true; 
+    startButton.style.visibility = 'hidden';
+
+    jump();
+}
+
+startButton.addEventListener('click', start);
