@@ -1,13 +1,14 @@
 const bird = document.getElementById('bird');
 var pipes = document.querySelectorAll('.pipe');
 const score = document.getElementById('score');
+const startButton = document.getElementById('start');
 var visitedPipes = []
 
 const gameOverDisplay = document.getElementById('gameover'); 
 
 const middleSpace = 250;
 
-var ongoinggame = true; 
+var ongoinggame = false; 
 
 const gravity = 9.82;
 var dy = 0; 
@@ -174,3 +175,27 @@ function restart() {
 
     createPipe();
 }
+
+
+// -------------------------------------------------------
+
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const analyser = audioContext.createAnalyser();
+
+function accessAudio() {
+    navigator.mediaDevices.getUserMedia({ audio: true })
+    .then((stream) => {
+        const mic = audioContext.createMediaStreamSource(stream);
+        mic.connect(analyser);
+
+        ongoinggame = true; 
+
+    })
+    .catch((error) => {
+        console.error('Error when trying to connect to microphone:', error);
+    });
+
+    startButton.style.visibility = 'hidden';
+}
+
+startButton.addEventListener('click', accessAudio);
