@@ -67,7 +67,7 @@ createPipe();
 // });
 
 function jump() {
-    dy = -10;
+    dy = 2;
 }
 
 setInterval(run, 100); 
@@ -76,12 +76,13 @@ function run() {
         const rect = bird.getBoundingClientRect();
         const y = parseFloat(rect.top) || 0;
 
-        dy += gravity; 
+        dy -= gravity; 
 
-        const newY = y + dy; 
+        const newY = y - dy; 
 
-        if(dy < 0)
+        if(dy > 0)
             dy = 0; 
+            
 
         bird.style.top = newY + "px"; 
 
@@ -205,7 +206,7 @@ function detectJump() {
 
         const value = dataArray[0] / 255; // value between 0 and 1 
         
-        if(value > 0.5)
+        if(value > 0.7)
             jump();
     }
 }
