@@ -66,28 +66,26 @@ createPipe();
 //         jump();
 // });
 
-// function jump() {
-//     dy = -30;
-// }
+function jump() {
+    dy = -10;
+}
 
 setInterval(run, 100); 
 function run() {
     if(ongoinggame) {
-        // const rect = bird.getBoundingClientRect();
-        // const y = parseFloat(rect.top) || 0;
+        const rect = bird.getBoundingClientRect();
+        const y = parseFloat(rect.top) || 0;
 
-        // dy += gravity; 
+        dy += gravity; 
 
-        // const newY = y + dy; 
+        const newY = y + dy; 
 
-        // if(dy > 0)
-        //     dy-= 2;
-        // if(dy < 0)
-        //     dy = 0; 
+        if(dy < 0)
+            dy = 0; 
 
-        bird.style.top = dy + "px"; 
+        bird.style.top = newY + "px"; 
 
-        if (isColliding() || dy >= window.innerHeight - bird.offsetHeight ) {
+        if (isColliding() || newY >= window.innerHeight - bird.offsetHeight ) {
             gameOver();
         } else moveBackground();
         
@@ -171,7 +169,7 @@ function restart() {
     });
 
     bird.style.top = "443px";
-    dy = 443; 
+    dy = 0; 
 
     createPipe();
 }
@@ -191,23 +189,24 @@ navigator.mediaDevices.getUserMedia({ audio: true })
     const mic = audioContext.createMediaStreamSource(stream);
     mic.connect(analyser);
 
-    jump();
+    detectJump();
 })
 .catch((error) => {
     console.error('Error when trying to connect to microphone:', error);
 });
 
-function jump() {
+function detectJump() {
     if(ongoinggame) {
-        requestAnimationFrame(jump);
+        requestAnimationFrame(detectJump);
 
         analyser.getByteFrequencyData(dataArray);
 
         const docHeight = document.body.scrollHeight;
 
         const value = dataArray[0] / 255; // value between 0 and 1 
-        dy = docHeight - (value * docHeight);
-        console.log(dy);
+        
+        if(value > 0.5)
+            jump();
     }
 }
 
@@ -217,7 +216,7 @@ function start() {
     ongoinggame = true; 
     startButton.style.visibility = 'hidden';
 
-    jump();
+    detectJump();
 }
 
 startButton.addEventListener('click', start);
